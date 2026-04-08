@@ -53,7 +53,7 @@ import { queueAssignmentRouter } from "@/src/features/annotation-queues/server/a
 import { surveysRouter } from "@/src/server/api/routers/surveys";
 import { naturalLanguageFilterRouter } from "@/src/features/natural-language-filters/server/router";
 import { notificationPreferencesRouter } from "@/src/server/api/routers/notificationPreferences";
-import { apraComplianceRouter } from "./routers/apraCompliance";
+import { apraGrcRouter } from "./routers/apraGrc";
 
 /**
  * This is the primary router for your server.
@@ -115,7 +115,7 @@ export const appRouter = createTRPCRouter({
   surveys: surveysRouter,
   naturalLanguageFilters: naturalLanguageFilterRouter,
   notificationPreferences: notificationPreferencesRouter,
-  apraCps: apraCpsRouter,
+  apraGrc: apraGrcRouter,
 });
 
 // export type definition of API

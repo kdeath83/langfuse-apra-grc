@@ -1,14 +1,14 @@
 import React from "react";
 import { Badge } from "@/src/components/ui/badge";
 import { Shield, AlertTriangle, CheckCircle, Clock, FileDown } from "lucide-react";
-import { type ApraCpsDomain } from "@langfuse/shared";
+import { type ApraGrcDomain } from "@langfuse/shared";
 
-interface ApraCpsBadgeProps {
-  compliance: ApraCpsDomain | null | undefined;
+interface ApraGrcBadgeProps {
+  compliance: ApraGrcDomain | null | undefined;
   showDetails?: boolean;
 }
 
-export function ApraCpsBadge({ compliance, showDetails = false }: ApraCpsBadgeProps) {
+export function ApraGrcBadge({ compliance, showDetails = false }: ApraGrcBadgeProps) {
   if (!compliance) {
     return (
       <Badge variant="outline" className="text-muted-foreground">

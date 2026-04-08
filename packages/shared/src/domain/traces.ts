@@ -8,8 +8,8 @@ export const MetadataDomain = z.record(
 
 export type MetadataDomain = z.infer<typeof MetadataDomain>;
 
-// APRA Compliance Schema
-export const ApraComplianceDomain = z.object({
+// APRA GRC Schema
+export const ApraGrcDomain = z.object({
   // Material impact threshold triggered (for 72-hour notification rule)
   materialImpact: z.boolean().default(false),
   // Type of material impact
@@ -48,7 +48,7 @@ export const ApraComplianceDomain = z.object({
   evidenceExportedAt: z.date().nullable().optional(),
 });
 
-export type ApraCpsDomain = z.infer<typeof ApraCpsDomain>;
+export type ApraGrcDomain = z.infer<typeof ApraGrcDomain>;
 
 // to be used across the application in frontend and backend.
 export const TraceDomain = z.object({
@@ -69,8 +69,8 @@ export const TraceDomain = z.object({
   sessionId: z.string().nullable(),
   userId: z.string().nullable(),
   projectId: z.string(),
-  // APRA compliance metadata
-  apraCompliance: ApraComplianceDomain.nullable().optional(),
+  // APRA GRC metadata
+  apraGrc: ApraGrcDomain.nullable().optional(),
 });
 
 export type TraceDomain = z.infer<typeof TraceDomain>;

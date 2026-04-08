@@ -30,12 +30,12 @@ export const tracesOnlyCols: ColumnDefinition[] = [
     internal: 't."environment"',
     options: [], // to be filled in at runtime
   },
-  // APRA CPS Column
+  // APRA GRC Column
   {
-    name: "APRA CPS",
-    id: "apraCps",
+    name: "APRA GRC",
+    id: "apraGrc",
     type: "stringOptions",
-    internal: 't."apra_cps"',
+    internal: 't."apra_grc"',
     options: [
       { value: "NOT_ASSESSED", label: "Not Assessed" },
       { value: "COMPLIANT", label: "Compliant" },
@@ -50,7 +50,7 @@ export const tracesOnlyCols: ColumnDefinition[] = [
     name: "Material Impact",
     id: "materialImpact",
     type: "boolean",
-    internal: 't."apra_cps"->>\'materialImpact\'',
+    internal: 't."apra_grc"->>\'materialImpact\'',
     nullable: true,
   },
   // CPS 234 Classification
@@ -58,7 +58,7 @@ export const tracesOnlyCols: ColumnDefinition[] = [
     name: "CPS 234 Level",
     id: "cps234Classification",
     type: "stringOptions",
-    internal: 't."apra_cps"->>\'cps234Classification\'',
+    internal: 't."apra_grc"->>\'cps234Classification\'',
     options: [
       { value: "LOW", label: "Low" },
       { value: "MEDIUM", label: "Medium" },
@@ -257,7 +257,7 @@ export type TraceOptions = {
   traceName?: Array<SingleValueOption>;
   traceTags?: Array<SingleValueOption>;
   environment?: Array<SingleValueOption>;
-  apraCompliance?: Array<SingleValueOption>;
+  apraGrc?: Array<SingleValueOption>;
   cps234Classification?: Array<SingleValueOption>;
 };
 export type DatasetOptions = {
@@ -294,8 +294,8 @@ export function tracesTableColsWithOptions(
     if (col.id === "environment") {
       return formatColumnOptions(col, options?.environment ?? []);
     }
-    if (col.id === "apraCps") {
-      return formatColumnOptions(col, options?.apraCps ?? []);
+    if (col.id === "apraGrc") {
+      return formatColumnOptions(col, options?.apraGrc ?? []);
     }
     if (col.id === "cps234Classification") {
       return formatColumnOptions(col, options?.cps234Classification ?? []);

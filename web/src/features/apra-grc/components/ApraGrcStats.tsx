@@ -3,12 +3,12 @@ import { api } from "@/src/utils/api";
 import { Card, CardContent, CardHeader, CardTitle } from "@/src/components/ui/card";
 import { AlertTriangle, CheckCircle, Clock, FileDown, Shield } from "lucide-react";
 
-interface ApraCpsStatsProps {
+interface ApraGrcStatsProps {
   projectId: string;
 }
 
-export function ApraCpsStats({ projectId }: ApraCpsStatsProps) {
-  const { data: stats, isLoading } = api.apraCps.getStats.useQuery(
+export function ApraGrcStats({ projectId }: ApraGrcStatsProps) {
+  const { data: stats, isLoading } = api.apraGrc.getStats.useQuery(
     { projectId },
     { enabled: !!projectId }
   );
@@ -17,7 +17,7 @@ export function ApraCpsStats({ projectId }: ApraCpsStatsProps) {
     return (
       <Card>
         <CardHeader>
-          <CardTitle className="text-sm font-medium">APRA CPS Overview</CardTitle>
+          <CardTitle className="text-sm font-medium">APRA GRC Overview</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="animate-pulse space-y-2">
@@ -34,7 +34,7 @@ export function ApraCpsStats({ projectId }: ApraCpsStatsProps) {
       <CardHeader>
         <CardTitle className="text-sm font-medium flex items-center gap-2">
           <Shield className="w-4 h-4" />
-          APRA CPS Overview
+          APRA GRC Overview
         </CardTitle>
       </CardHeader>
       <CardContent>
@@ -77,7 +77,6 @@ export function ApraCpsStats({ projectId }: ApraCpsStatsProps) {
           </div>
         </div>
 
-        {/* CPS 234 Classification Breakdown */}
         {stats.materialImpact > 0 && (
           <div className="mt-4 pt-4 border-t">
             <p className="text-xs text-muted-foreground mb-2">CPS 234 Impact Classification:</p>

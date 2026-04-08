@@ -18,34 +18,34 @@ import {
 import { Textarea } from "@/src/components/ui/textarea";
 import { Input } from "@/src/components/ui/input";
 import { Label } from "@/src/components/ui/label";
-import { ApraCpsBadge, CPS234ClassificationBadge } from "./ApraCpsBadge";
+import { ApraGrcBadge, CPS234ClassificationBadge } from "./ApraGrcBadge";
 import { AlertTriangle, CheckCircle, Download, Shield } from "lucide-react";
 import { useToast } from "@/src/components/ui/use-toast";
-import { type ApraCpsDomain } from "@langfuse/shared";
+import { type ApraGrcDomain } from "@langfuse/shared";
 
-interface ApraCpsPanelProps {
+interface ApraGrcPanelProps {
   projectId: string;
   traceId: string;
-  initialCompliance?: ApraCpsDomain | null;
+  initialCompliance?: ApraGrcDomain | null;
 }
 
-export function ApraCpsPanel({
+export function ApraGrcPanel({
   projectId,
   traceId,
   initialCompliance,
-}: ApraCpsPanelProps) {
+}: ApraGrcPanelProps) {
   const { toast } = useToast();
-  const [compliance, setCompliance] = useState<ApraCpsDomain | null>(initialCompliance || null);
+  const [compliance, setCompliance] = useState<ApraGrcDomain | null>(initialCompliance || null);
   const [isEditing, setIsEditing] = useState(false);
   const [notificationRef, setNotificationRef] = useState(compliance?.notificationRef || "");
 
-  const updateMutation = api.apraCps.update.useMutation({
+  const updateMutation = api.apraGrc.update.useMutation({
     onSuccess: (data) => {
-      setCompliance(data.compliance as ApraCpsDomain);
+      setCompliance(data.compliance as ApraGrcDomain);
       setIsEditing(false);
       toast({
-        title: "APRA CPS Updated",
-        description: "The CPS status has been saved.",
+        title: "APRA GRC Updated",
+        description: "The GRC status has been saved.",
       });
     },
     onError: (error) => {
@@ -57,13 +57,12 @@ export function ApraCpsPanel({
     },
   });
 
-  const notifyMutation = api.apraCps.markNotified.useMutation({
+  const notifyMutation = api.apraGrc.markNotified.useMutation({
     onSuccess: (data) => {
       toast({
         title: "APRA Notification Recorded",
         description: `Notification reference: ${data.notificationRef || "N/A"}`,
       });
-      // Refresh CPS data
       if (compliance) {
         setCompliance({
           ...compliance,
@@ -82,7 +81,7 @@ export function ApraCpsPanel({
     },
   });
 
-  const exportMutation = api.apraCps.exportEvidence.useMutation({
+  const exportMutation = api.apraGrc.exportEvidence.useMutation({
     onSuccess: (data) => {
       toast({
         title: "Evidence Package Exported",
@@ -99,8 +98,8 @@ export function ApraCpsPanel({
   });
 
   const handleMarkMaterialImpact = (values: {
-    impactType: ApraCpsDomain["impactType"];
-    cps234Classification: ApraCpsDomain["cps234Classification"];
+    impactType: ApraGrcDomain["impactType"];
+    cps234Classification: ApraGrcDomain["cps234Classification"];
     assessmentNotes?: string;
   }) => {
     updateMutation.mutate({
@@ -154,13 +153,13 @@ export function ApraCpsPanel({
           <div>
             <CardTitle className="flex items-center gap-2">
               <Shield className="w-5 h-5" />
-              APRA CPS
+              APRA GRC
             </CardTitle>
             <CardDescription>
               CPS 234 Information Security & CPS 230 Operational Risk
             </CardDescription>
           </div>
-          <ApraCpsBadge compliance={compliance} showDetails />
+          <ApraGrcBadge compliance={compliance} showDetails />
         </div>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -257,7 +256,7 @@ export function ApraCpsPanel({
               </>
             ) : (
               <p className="text-muted-foreground">
-                No APRA CPS assessment has been recorded for this trace.
+                No APRA GRC assessment has been recorded for this trace.
               </p>
             )}
             
@@ -266,7 +265,7 @@ export function ApraCpsPanel({
                 variant="outline"
                 onClick={() => setIsEditing(true)}
               >
-                {compliance ? "Edit Assessment" : "Assess CPS"}
+                {compliance ? "Edit Assessment" : "Assess GRC"}
               </Button>
               <Button
                 variant="outline"
@@ -279,7 +278,7 @@ export function ApraCpsPanel({
             </div>
           </div>
         ) : (
-          <ApraCpsForm
+          <ApraGrcForm
             projectId={projectId}
             traceId={traceId}
             onSubmit={handleMarkMaterialImpact}
@@ -293,12 +292,12 @@ export function ApraCpsPanel({
   );
 }
 
-interface ApraCpsFormProps {
+interface ApraGrcFormProps {
   projectId: string;
   traceId: string;
   onSubmit: (values: {
-    impactType: ApraCpsDomain["impactType"];
-    cps234Classification: ApraCpsDomain["cps234Classification"];
+    impactType: ApraGrcDomain["impactType"];
+    cps234Classification: ApraGrcDomain["cps234Classification"];
     assessmentNotes?: string;
   }) => void;
   onMarkCompliant: () => void;
@@ -306,14 +305,14 @@ interface ApraCpsFormProps {
   isLoading: boolean;
 }
 
-function ApraCpsForm({
+function ApraGrcForm({
   onSubmit,
   onMarkCompliant,
   onCancel,
   isLoading,
-}: ApraCpsFormProps) {
-  const [impactType, setImpactType] = useState<ApraCpsDomain["impactType"]>"OPERATIONAL");
-  const [cps234Classification, setCps234Classification] = useState<ApraCpsDomain["cps234Classification"]>"LOW");
+}: ApraGrcFormProps) {
+  const [impactType, setImpactType] = useState<ApraGrcDomain["impactType"]>("OPERATIONAL");
+  const [cps234Classification, setCps234Classification] = useState<ApraGrcDomain["cps234Classification"]>("LOW");
   const [assessmentNotes, setAssessmentNotes] = useState("");
 
   return (
@@ -323,7 +322,7 @@ function ApraCpsForm({
           <Label>Impact Type (CPS 234)</Label>
           <Select
             value={impactType || "OPERATIONAL"}
-            onValueChange={(v) => setImpactType(v as ApraCpsDomain["impactType"])}
+            onValueChange={(v) => setImpactType(v as ApraGrcDomain["impactType"])}
           >
             <SelectTrigger>
               <SelectValue />
@@ -342,7 +341,7 @@ function ApraCpsForm({
           <Label>CPS 234 Classification</Label>
           <Select
             value={cps234Classification || "LOW"}
-            onValueChange={(v) => setCps234Classification(v as ApraCpsDomain["cps234Classification"])}
+            onValueChange={(v) => setCps234Classification(v as ApraGrcDomain["cps234Classification"])}
           >
             <SelectTrigger>
               <SelectValue />

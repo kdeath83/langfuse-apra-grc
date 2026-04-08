@@ -1,10 +1,17 @@
-# Langfuse APRA CPS — AI Observability for Australian Financial Services
+# Langfuse APRA GRC — AI Observability for Australian Financial Services
 
-Built by [Krish De](https://linkedin.com/in/krishde) — 8 years at AWS, co-author of CPS230/CPS234.
+⚠️ **PROTOTYPE — FOR DEMONSTRATION PURPOSES ONLY**
+
+Built by [Krish De](https://linkedin.com/in/krishde) — ex APRA, co-author of CPS230/CPS234 & AWS Principal GRC
+
+
+This is a proof-of-concept fork exploring the extrapolation of AI observability from a subset of APRA prudential expectations. 
+It is **NOT production-ready** and should not be used in actual financial services environments without significant additional development, security review, and compliance validation.
+
 
 ## What This Is
 
-A fork of [Langfuse](https://langfuse.com) that adds **APRA-native compliance features** for AI observability in Australian banks and insurers.
+A fork of [Langfuse](https://langfuse.com) that adds **GRC features** for AI observability within Australian banks and insurers.
 
 **The Problem:** AI systems make decisions affecting customers and compliance, but teams have black-box systems that can't explain *why* decisions were made to regulators.
 
@@ -12,7 +19,7 @@ A fork of [Langfuse](https://langfuse.com) that adds **APRA-native compliance fe
 
 ## Features
 
-### 1. Material Impact Tagging (CPS 234 72-Hour Rule)
+### 1. Material Impact Tagging (CPS 234, Paragraph 36-37 72-Hour Notification Rule)
 - Flag traces by CPS 234 classification: LOW / MEDIUM / HIGH / CRITICAL
 - Automatic 72-hour notification tracking
 - Audit trail with timestamps and assessor identity
@@ -29,25 +36,27 @@ A fork of [Langfuse](https://langfuse.com) that adds **APRA-native compliance fe
 
 ## Who This Is For
 
-- Risk teams at Australian banks
+- Risk teams at Australian APRA regulated industries
 - Compliance officers navigating CPS 230/234
 - AI governance leads who need explainability, not just logging
 
-## Security & Performance
+## Security & Performance (Conceptual)
 
-This fork includes production-ready fixes:
-- ✅ Atomic transactions for concurrent updates
-- ✅ Row-level locking for audit integrity
-- ✅ Batch operation limits (N+1 eliminated)
-- ✅ Sensitive data redaction in exports
-- ✅ Database indexes for common queries
+This prototype explores these security concepts:
+- 🔄 Atomic transactions for concurrent updates
+- 🔄 Row-level locking for audit integrity
+- 🔄 Batch operation limits (N+1 addressed)
+- 🔄 Sensitive data considerations for exports
+- 🔄 Database indexing strategies
+
+**Note:** These are implemented as learning exercises. A production system would require formal security audit, penetration testing, and compliance validation.
 
 ## Quick Start
 
 ```bash
 # 1. Clone
-git clone https://github.com/kdeath83/langfuse-apra-cps.git
-cd langfuse-apra-cps
+git clone https://github.com/kdeath83/langfuse-apra-grc.git
+cd langfuse-apra-grc
 
 # 2. Install
 pnpm install --ignore-scripts
@@ -67,11 +76,8 @@ pnpm dev
 
 ## Why I Built This
 
-I spent 8 years at AWS helping banks deploy AI. Before that, I co-wrote the regulations (CPS230, CPS234) that tell those banks how to prove their AI is safe. I've sat on both sides.
-
-The certification industrial complex is booming, but most "AI governance" tools are liability theater. They teach you just enough to sound informed in a meeting, not enough to build anything that works.
-
-This is the opposite: working code that demonstrates competence.
+Most "AI governance" tools are liability theater. They teach you just enough to sound informed in a meeting, not enough to build anything that works.
+This is the opposite: working code that demonstrates the gap between *knowing* about AI GRC and *building* for it.
 
 ## Architecture
 
@@ -80,10 +86,44 @@ This is the opposite: working code that demonstrates competence.
 - **Observability:** OpenTelemetry-compatible tracing
 - **Compliance:** CPS 230/234-native data model
 
+## Regulatory Mapping (Conceptual)
+
+This prototype explores compliance with the following APRA prudential standards:
+
+### CPS 234 — Information Security
+
+**Paragraph 36-37: Information Security Incident Management**
+- 72-hour notification requirement for material incidents
+- This prototype's "Material Impact Tagging" and notification workflow demonstrate tracking this obligation
+
+**Paragraph 39: Testing and Assurance**
+- Requirement for systematic testing of security controls
+- The audit trail features demonstrate how AI system decisions could be tested and validated
+
+**Paragraph 45-46: Security Controls for Information Assets**
+- Controls commensurate with criticality and sensitivity
+- The CPS 234 classification levels (LOW/MEDIUM/HIGH/CRITICAL) map directly to this requirement
+
+### CPS 230 — Operational Risk Management
+
+**Paragraph 14-15: Operational Risk Management Framework**
+- Requirement to identify, assess, and manage operational risks
+- The compliance dashboard demonstrates risk visibility for AI systems
+
+**Paragraph 23-24: Risk Assessment and Monitoring**
+- Continuous monitoring and assessment of operational risks
+- The stats widget and filtering capabilities demonstrate this concept
+
+**Paragraph 39-40: Third-Party Risk Management**
+- Management of risks from service providers (relevant for AI/ML platforms)
+- The evidence export feature demonstrates how third-party AI system decisions could be documented
+
+**Disclaimer:** These mappings are illustrative only. APRA-regulated entities must conduct their own compliance assessments and obtain appropriate legal and compliance advice before implementing any system based on this prototype.
+
 ## Key Files
 
-- `web/src/server/api/routers/apraCps.ts` — Main compliance API
-- `web/src/features/apra-cps/` — UI components
+- `web/src/server/api/routers/apraGrc.ts` — Main compliance API
+- `web/src/features/apra-grc/` — UI components
 - `packages/shared/prisma/schema.prisma` — Database schema
 
 ## License
@@ -93,4 +133,4 @@ MIT (same as Langfuse)
 ## Credits
 
 - Original [Langfuse](https://langfuse.com) by Langfuse Authors
-- APRA CPS extensions by Krish De
+- APRA GRC extensions by Krish De

@@ -337,7 +337,7 @@ model LegacyPrismaTrace {
   sessionId  String?  @map("session_id")
   createdAt  DateTime @default(now()) @map("created_at")
   updatedAt  DateTime @default(now()) @updatedAt @map("updated_at")
-  apraCompliance Json?  @map("apra_compliance") // APRA compliance metadata for CPS 234/230
+  apraGrc Json?  @map("apra_grc") // APRA GRC metadata for CPS 234/230
 
   @@index([projectId, timestamp])
   @@index([sessionId])
@@ -347,7 +347,7 @@ model LegacyPrismaTrace {
   @@index(timestamp)
   @@index(createdAt)
   @@index([tags(ops: ArrayOps)], type: Gin)
-  @@index([apraCps(ops: JsonbOps)], type: Gin)
+  @@index([apraGrc(ops: JsonbOps)], type: Gin)
   @@map("traces")
 }
 

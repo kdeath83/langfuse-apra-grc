@@ -39,7 +39,7 @@ import { useV4Beta } from "@/src/features/events/hooks/useV4Beta";
 import { type ViewVersion } from "@/src/features/query";
 import { useEnvironmentFilterOptionsCache } from "@/src/hooks/use-environment-filter-options-cache";
 import { NoDataOrLoading } from "@/src/components/NoDataOrLoading";
-import { ApraCpsStats } from "@/src/features/apra-cps";
+import { ApraGrcStats } from "@/src/features/apra-grc";
 import {
   DashboardQuerySchedulerProvider,
   getDashboardQuerySchedulerMaxConcurrent,
@@ -375,7 +375,7 @@ export default function Dashboard() {
               metricsVersion={metricsVersion}
               schedulerId={`${homeSchedulerIdPrefix}${HOME_DASHBOARD_CARD_IDS.scoreAnalytics}`}
             />
-            <ApraComplianceStats projectId={projectId} />
+            <ApraGrcStats projectId={projectId} />
           </div>
         )}
       </Page>

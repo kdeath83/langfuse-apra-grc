@@ -30,6 +30,43 @@ export const tracesOnlyCols: ColumnDefinition[] = [
     internal: 't."environment"',
     options: [], // to be filled in at runtime
   },
+  // APRA CPS Column
+  {
+    name: "APRA CPS",
+    id: "apraCps",
+    type: "stringOptions",
+    internal: 't."apra_cps"',
+    options: [
+      { value: "NOT_ASSESSED", label: "Not Assessed" },
+      { value: "COMPLIANT", label: "Compliant" },
+      { value: "MATERIAL_IMPACT", label: "Material Impact" },
+      { value: "NOTIFIED", label: "APRA Notified" },
+      { value: "EVIDENCE_EXPORTED", label: "Evidence Exported" },
+    ],
+    nullable: true,
+  },
+  // Material Impact Flag
+  {
+    name: "Material Impact",
+    id: "materialImpact",
+    type: "boolean",
+    internal: 't."apra_cps"->>\'materialImpact\'',
+    nullable: true,
+  },
+  // CPS 234 Classification
+  {
+    name: "CPS 234 Level",
+    id: "cps234Classification",
+    type: "stringOptions",
+    internal: 't."apra_cps"->>\'cps234Classification\'',
+    options: [
+      { value: "LOW", label: "Low" },
+      { value: "MEDIUM", label: "Medium" },
+      { value: "HIGH", label: "High (72h notify)" },
+      { value: "CRITICAL", label: "Critical (immediate)" },
+    ],
+    nullable: true,
+  },
   {
     name: "Timestamp",
     id: "timestamp",
@@ -220,6 +257,8 @@ export type TraceOptions = {
   traceName?: Array<SingleValueOption>;
   traceTags?: Array<SingleValueOption>;
   environment?: Array<SingleValueOption>;
+  apraCompliance?: Array<SingleValueOption>;
+  cps234Classification?: Array<SingleValueOption>;
 };
 export type DatasetOptions = {
   datasetId: Array<SingleValueOption>;
@@ -254,6 +293,12 @@ export function tracesTableColsWithOptions(
     }
     if (col.id === "environment") {
       return formatColumnOptions(col, options?.environment ?? []);
+    }
+    if (col.id === "apraCps") {
+      return formatColumnOptions(col, options?.apraCps ?? []);
+    }
+    if (col.id === "cps234Classification") {
+      return formatColumnOptions(col, options?.cps234Classification ?? []);
     }
     if (col.id === "score_categories") {
       return formatColumnOptions(col, options?.score_categories ?? []);

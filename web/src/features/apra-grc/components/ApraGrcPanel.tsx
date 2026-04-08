@@ -35,9 +35,13 @@ export function ApraGrcPanel({
   initialCompliance,
 }: ApraGrcPanelProps) {
   const { toast } = useToast();
-  const [compliance, setCompliance] = useState<ApraGrcDomain | null>(initialCompliance || null);
+  const [compliance, setCompliance] = useState<ApraGrcDomain | null>(
+    initialCompliance || null,
+  );
   const [isEditing, setIsEditing] = useState(false);
-  const [notificationRef, setNotificationRef] = useState(compliance?.notificationRef || "");
+  const [notificationRef, setNotificationRef] = useState(
+    compliance?.notificationRef || "",
+  );
 
   const updateMutation = api.apraGrc.update.useMutation({
     onSuccess: (data) => {
@@ -121,7 +125,7 @@ export function ApraGrcPanel({
         cps234Classification: null,
         impactType: null,
         notifiedApra: false,
-        assessmentNotes: "Marked as compliant - no material impact",
+        assessmentNotes: "Assessed as no material impact at trace level",
       },
     });
   };
@@ -142,8 +146,10 @@ export function ApraGrcPanel({
     });
   };
 
-  const needsNotification = compliance?.materialImpact && 
-    (compliance?.cps234Classification === "HIGH" || compliance?.cps234Classification === "CRITICAL") &&
+  const needsNotification =
+    compliance?.materialImpact &&
+    (compliance?.cps234Classification === "HIGH" ||
+      compliance?.cps234Classification === "CRITICAL") &&
     !compliance?.notifiedApra;
 
   return (
@@ -156,7 +162,9 @@ export function ApraGrcPanel({
               APRA GRC
             </CardTitle>
             <CardDescription>
-              CPS 234 Information Security & CPS 230 Operational Risk
+              CPS 234 information security and CPS 230 operational risk support.
+              Helpful evidence, not a substitute for judgement, legal advice, or
+              a mildly stressed compliance officer.
             </CardDescription>
           </div>
           <ApraGrcBadge compliance={compliance} showDetails />
@@ -167,9 +175,13 @@ export function ApraGrcPanel({
           <div className="bg-red-50 border border-red-200 rounded-lg p-4 flex items-start gap-3">
             <AlertTriangle className="w-5 h-5 text-red-600 mt-0.5" />
             <div>
-              <h4 className="font-semibold text-red-900">72-Hour Notification Required</h4>
+              <h4 className="font-semibold text-red-900">
+                Assess 72-Hour Notification
+              </h4>
               <p className="text-sm text-red-700 mt-1">
-                This trace has HIGH or CRITICAL impact classification. APRA must be notified within 72 hours.
+                This trace is marked HIGH or CRITICAL. Review whether APRA
+                notification is required within 72 hours of becoming aware, then
+                record the outcome here.
               </p>
               <div className="mt-3 flex gap-2">
                 <Input
@@ -184,7 +196,9 @@ export function ApraGrcPanel({
                   variant="destructive"
                 >
                   <CheckCircle className="w-4 h-4 mr-2" />
-                  {notifyMutation.isLoading ? "Recording..." : "Mark APRA Notified"}
+                  {notifyMutation.isLoading
+                    ? "Recording..."
+                    : "Record APRA Notification"}
                 </Button>
               </div>
             </div>
@@ -197,31 +211,41 @@ export function ApraGrcPanel({
               <>
                 <div className="grid grid-cols-2 gap-4 text-sm">
                   <div>
-                    <span className="text-muted-foreground">Material Impact:</span>
+                    <span className="text-muted-foreground">
+                      Material Impact:
+                    </span>
                     <p className="font-medium">
                       {compliance.materialImpact ? "Yes" : "No"}
                     </p>
                   </div>
                   {compliance.impactType && (
                     <div>
-                      <span className="text-muted-foreground">Impact Type:</span>
+                      <span className="text-muted-foreground">
+                        Impact Type:
+                      </span>
                       <p className="font-medium">{compliance.impactType}</p>
                     </div>
                   )}
                   {compliance.cps234Classification && (
                     <div>
-                      <span className="text-muted-foreground">CPS 234 Classification:</span>
+                      <span className="text-muted-foreground">
+                        CPS 234 Classification:
+                      </span>
                       <div className="mt-1">
-                        <CPS234ClassificationBadge classification={compliance.cps234Classification} />
+                        <CPS234ClassificationBadge
+                          classification={compliance.cps234Classification}
+                        />
                       </div>
                     </div>
                   )}
                   {compliance.notifiedApra && (
                     <div>
-                      <span className="text-muted-foreground">APRA Notified:</span>
+                      <span className="text-muted-foreground">
+                        APRA Notified:
+                      </span>
                       <p className="font-medium text-green-600">
-                        {compliance.notifiedAt 
-                          ? new Date(compliance.notifiedAt).toLocaleDateString() 
+                        {compliance.notifiedAt
+                          ? new Date(compliance.notifiedAt).toLocaleDateString()
                           : "Yes"}
                       </p>
                       {compliance.notificationRef && (
@@ -233,7 +257,9 @@ export function ApraGrcPanel({
                   )}
                   {compliance.assessedAt && (
                     <div>
-                      <span className="text-muted-foreground">Last Assessed:</span>
+                      <span className="text-muted-foreground">
+                        Last Assessed:
+                      </span>
                       <p className="font-medium">
                         {new Date(compliance.assessedAt).toLocaleDateString()}
                       </p>
@@ -247,7 +273,9 @@ export function ApraGrcPanel({
                 </div>
                 {compliance.assessmentNotes && (
                   <div>
-                    <span className="text-muted-foreground">Assessment Notes:</span>
+                    <span className="text-muted-foreground">
+                      Assessment Notes:
+                    </span>
                     <p className="text-sm mt-1 bg-muted p-2 rounded">
                       {compliance.assessmentNotes}
                     </p>
@@ -259,12 +287,9 @@ export function ApraGrcPanel({
                 No APRA GRC assessment has been recorded for this trace.
               </p>
             )}
-            
+
             <div className="flex gap-2 pt-2">
-              <Button
-                variant="outline"
-                onClick={() => setIsEditing(true)}
-              >
+              <Button variant="outline" onClick={() => setIsEditing(true)}>
                 {compliance ? "Edit Assessment" : "Assess GRC"}
               </Button>
               <Button
@@ -311,8 +336,10 @@ function ApraGrcForm({
   onCancel,
   isLoading,
 }: ApraGrcFormProps) {
-  const [impactType, setImpactType] = useState<ApraGrcDomain["impactType"]>("OPERATIONAL");
-  const [cps234Classification, setCps234Classification] = useState<ApraGrcDomain["cps234Classification"]>("LOW");
+  const [impactType, setImpactType] =
+    useState<ApraGrcDomain["impactType"]>("OPERATIONAL");
+  const [cps234Classification, setCps234Classification] =
+    useState<ApraGrcDomain["cps234Classification"]>("LOW");
   const [assessmentNotes, setAssessmentNotes] = useState("");
 
   return (
@@ -322,7 +349,9 @@ function ApraGrcForm({
           <Label>Impact Type (CPS 234)</Label>
           <Select
             value={impactType || "OPERATIONAL"}
-            onValueChange={(v) => setImpactType(v as ApraGrcDomain["impactType"])}
+            onValueChange={(v) =>
+              setImpactType(v as ApraGrcDomain["impactType"])
+            }
           >
             <SelectTrigger>
               <SelectValue />
@@ -341,7 +370,11 @@ function ApraGrcForm({
           <Label>CPS 234 Classification</Label>
           <Select
             value={cps234Classification || "LOW"}
-            onValueChange={(v) => setCps234Classification(v as ApraGrcDomain["cps234Classification"])}
+            onValueChange={(v) =>
+              setCps234Classification(
+                v as ApraGrcDomain["cps234Classification"],
+              )
+            }
           >
             <SelectTrigger>
               <SelectValue />
@@ -388,7 +421,7 @@ function ApraGrcForm({
             disabled={isLoading}
           >
             <CheckCircle className="w-4 h-4 mr-2" />
-            Mark Compliant
+            Mark No Material Impact
           </Button>
         </div>
         <Button variant="ghost" onClick={onCancel}>

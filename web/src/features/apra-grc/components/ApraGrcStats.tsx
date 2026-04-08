@@ -1,7 +1,18 @@
 import React from "react";
 import { api } from "@/src/utils/api";
-import { Card, CardContent, CardHeader, CardTitle } from "@/src/components/ui/card";
-import { AlertTriangle, CheckCircle, Clock, FileDown, Shield } from "lucide-react";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/src/components/ui/card";
+import {
+  AlertTriangle,
+  CheckCircle,
+  Clock,
+  FileDown,
+  Shield,
+} from "lucide-react";
 
 interface ApraGrcStatsProps {
   projectId: string;
@@ -10,14 +21,16 @@ interface ApraGrcStatsProps {
 export function ApraGrcStats({ projectId }: ApraGrcStatsProps) {
   const { data: stats, isLoading } = api.apraGrc.getStats.useQuery(
     { projectId },
-    { enabled: !!projectId }
+    { enabled: !!projectId },
   );
 
   if (isLoading || !stats) {
     return (
       <Card>
         <CardHeader>
-          <CardTitle className="text-sm font-medium">APRA GRC Overview</CardTitle>
+          <CardTitle className="text-sm font-medium">
+            APRA GRC Overview
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="animate-pulse space-y-2">
@@ -48,21 +61,27 @@ export function ApraGrcStats({ projectId }: ApraGrcStatsProps) {
             <p className="text-xs text-muted-foreground">Assessed</p>
           </div>
           <div className="space-y-1">
-            <p className="text-2xl font-bold text-red-600">{stats.materialImpact}</p>
+            <p className="text-2xl font-bold text-red-600">
+              {stats.materialImpact}
+            </p>
             <p className="text-xs text-muted-foreground flex items-center gap-1">
               <AlertTriangle className="w-3 h-3" />
               Material Impact
             </p>
           </div>
           <div className="space-y-1">
-            <p className="text-2xl font-bold text-orange-600">{stats.pendingNotification}</p>
+            <p className="text-2xl font-bold text-orange-600">
+              {stats.pendingNotification}
+            </p>
             <p className="text-xs text-muted-foreground flex items-center gap-1">
               <Clock className="w-3 h-3" />
-              Pending 72h Notification
+              Pending 72h Assessment
             </p>
           </div>
           <div className="space-y-1">
-            <p className="text-2xl font-bold text-green-600">{stats.notifiedApra}</p>
+            <p className="text-2xl font-bold text-green-600">
+              {stats.notifiedApra}
+            </p>
             <p className="text-xs text-muted-foreground flex items-center gap-1">
               <CheckCircle className="w-3 h-3" />
               APRA Notified
@@ -79,7 +98,9 @@ export function ApraGrcStats({ projectId }: ApraGrcStatsProps) {
 
         {stats.materialImpact > 0 && (
           <div className="mt-4 pt-4 border-t">
-            <p className="text-xs text-muted-foreground mb-2">CPS 234 Impact Classification:</p>
+            <p className="text-xs text-muted-foreground mb-2">
+              CPS 234 Impact Classification:
+            </p>
             <div className="flex gap-2 text-xs">
               <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded">
                 Low: {stats.byClassification.LOW}
@@ -99,7 +120,9 @@ export function ApraGrcStats({ projectId }: ApraGrcStatsProps) {
 
         {stats.pendingNotification > 0 && (
           <div className="mt-4 p-2 bg-red-50 border border-red-200 rounded text-xs text-red-800">
-            <strong>Action Required:</strong> {stats.pendingNotification} trace(s) require APRA notification within 72 hours.
+            <strong>Action Required:</strong> {stats.pendingNotification}{" "}
+            trace(s) need a 72-hour notification assessment workflow.
+            Prudentially speaking, now would be a bad time to wing it.
           </div>
         )}
       </CardContent>
